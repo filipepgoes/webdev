@@ -28,11 +28,41 @@ int32 setupserver(int8 *host, int16 port){
     return s;
 }
 
-
+void usage (int8* arg){
+    fprintf(stderr, "Usage: %s <port> [host]\n", $c arg);
+    exit(-1);
+    return;
+}
 int main(int argc, char *argv[]){
-    int8 *str;
-    str= $8 "Server starting up";
-    log(str);
-    return 0;
+    int8 ret;
+    int8 buf[128];
+    int8 *host, *port8;
+    int16 port;
+    int32 s;
+
+    if (argc <2){
+        usage( $8 *argv);
+    }
+    else if (argc == 2){
+        port8 = $8 argv[1];
+        port = $6 atoi($c port8);
+        host = $8 "0.0.0.0";
+    }
+    else{
+        port8 = $8 argv[1];
+        port = $6 atoi($c port8);
+        host = $8 argv[2];
+    }
+
+    s = setupserver(host, port);
+    zero(buf, 128);
+    snprintf( $c buf, 127, "Server successfully listening to %s:%d.", 
+        $c host, $i port);
+    log(buf);
+    continuation = true;
+    while (continuation)
+        ret = mainloop(s);
+    close(s);
+    return ret;
 }
 

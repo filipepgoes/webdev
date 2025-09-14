@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <stdbool.h>
 #include <syslog.h>
+#include "./lib/birchutils.h"
 
 typedef unsigned char int8;
 typedef unsigned short int int16;
@@ -25,6 +26,8 @@ typedef unsigned long long int int64;
 #define logwarning(x) syslogger(LOG_WARN, x)
 #define logerr(x)     syslogger(LOG_ERR, x)
 
-void syslogger(int16,int8*);
-int32 setupserver(int8*,int16);
-int main (int,char**);
+void syslogger(int16, int8*);
+int32 setupserver(int8*, int16);
+int8 mainloop(int32);
+void usage(int8*);
+int main (int, char**);
